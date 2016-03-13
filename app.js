@@ -19,20 +19,19 @@ function mainFn() {
 function getData(data) {
 	var $ = cheerio.load(data);
 
-	var meizi = $('#picture img').toArray();
-	var len = meizi.length;
-	for (var i = 0; i < len; i++) {
-		var imgPath = meizi[i].attribs.src;
+	var meizi = $('#picture img').toArray().length !== 0 ? $('#picture img').toArray() : $('.postContent img').toArray();
+	//以前的html容器的class和现在的id不同
+	meizi.map(function(item) {
+		var imgPath = item.attribs.src;
 		var fileName = parseUrlToFileName(imgPath);
-		var fileName = imgPath.substr(42).replace(/\//g, '-');
 		downloadImg(imgPath, fileName, function() {
 			console.log(fileName + ' done.');
 		})
-	}
+	})
 }
 
 function parseUrlToFileName(addr) {
-	return path.basename(addr);
+	return addr.substr(42).replace(/\//g, '-');
 }
 
 var downloadImg = function(url, filename, callback) {
@@ -42,6 +41,6 @@ var downloadImg = function(url, filename, callback) {
 			console.log('err: ' + err);
 			return false;
 		}
-		request(url).pipe(fs.createWriteStream('/Users/troy/Pictures/' + filename)).on('close', callback);
+		request(url).pipe(fs.createWriteStream('/Users/troy/Pictures/meizi/' + filename)).on('close', callback);
 	});
 };
