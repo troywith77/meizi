@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 var request = require('request');
 var cheerio = require('cheerio');
-var iconv = require('iconv-lite');
 
 mainFn();
 
@@ -41,6 +40,7 @@ var downloadImg = function(url, filename, callback) {
 			console.log('err: ' + err);
 			return false;
 		}
-		request(url).pipe(fs.createWriteStream('/Users/troy/Pictures/meizi/' + filename)).on('close', callback);
+		// request(url).pipe(fs.createWriteStream('/Users/troy/Pictures/meizi/' + filename)).on('close', callback);  //Mac
+		request(url).pipe(fs.createWriteStream('C:\\Users\\Administrator\\meiziPic\\' + filename)).on('close', callback);  //Win
 	});
 };
